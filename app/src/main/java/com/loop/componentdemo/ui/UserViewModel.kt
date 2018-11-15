@@ -6,7 +6,7 @@ import com.loop.componentdemo.persistence.UserDao
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
-class UserViewModel(val dataSource:UserDao):ViewModel() {
+class UserViewModel(private val dataSource:UserDao):ViewModel() {
 
     /**
      *  get the username of user

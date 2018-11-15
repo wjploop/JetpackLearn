@@ -30,7 +30,8 @@ class UserActivity : AppCompatActivity() {
 
         viewModel= ViewModelProviders.of(this,viewModelFactory)[UserViewModel::class.java]
 
-        //大体来看，一个activity创建一个管理viewModel的工厂，其用来创建一个个viewModel
+        //大体来看，一个activity创建一个管理viewModel
+        // 的工厂，其用来创建一个个viewModel
         //viewModelFactory人如其名，使用了工厂模式，并且管理一个viewModel的集合，一般通过类作为键来索引
 
         //viewModel创建了一个用来给activity的提供的一个独立的，与android应用层不相关的逻辑，比如生命周期的内容不会由viewModel来控制
@@ -38,6 +39,20 @@ class UserActivity : AppCompatActivity() {
         //viewModel只是实现了一个onClear的方法，在创建一个viewModel时，通过of(context)来选择这个model的活动范围，并在超出范围之后销毁
 
 
+        user_btn.setOnClickListener { updateUsername() }
+
+    }
+
+    private fun updateUsername() {
+        user_btn.isEnabled=false
+        disposable.add(viewModel.updateUser(user_et.text.toString())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                user_btn.isEnabled=true
+            },{
+                Log.e("wolf","Unable to update username")
+            }))
     }
 
     override fun onStart() {

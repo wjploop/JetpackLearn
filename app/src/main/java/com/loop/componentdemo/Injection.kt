@@ -9,14 +9,14 @@ import com.loop.componentdemo.ui.UserViewModelFactory
 //之后会用dagger代替注入
 object Injection{
 
-    fun provideDataSource(context: Context):UserDao{
-        val database=UsersDatabase.getInstane(context)
+    private fun provideDataSource(context: Context):UserDao{
+        val database=UsersDatabase.getInstance(context)
         return database.userDao()
     }
 
     fun provideViewModelFactory(context: Context):UserViewModelFactory{
-        val database=UsersDatabase.getInstane(context)
-        return UserViewModelFactory(database.userDao())
+        val dataSource= provideDataSource(context)
+        return UserViewModelFactory(dataSource)
     }
 
 }
